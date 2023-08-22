@@ -27,6 +27,6 @@ $ node intern_task.js
 
 ### map
 
-*COMING SOON!*
+Edges without arrows are bidirectional.
 
-![map](/img/map.png)
+![map](/img/kyndryl_map.png)
