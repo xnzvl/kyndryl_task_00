@@ -26,6 +26,7 @@ const ADJACENCY_LIST = [
   [18, 23, 25],
   [19, 20]
 ]
+const INDENT_UNIT = "  ";
 const PROMPT = require('prompt-sync')({sigint: true});
 const TARGET_ID = "N";
 
@@ -60,19 +61,42 @@ class Player {
   travelTo(destinationIndex) {
     this.#position = this.getTravelOptions()[destinationIndex]
   }
+
+  onActionPosition() {
+    return Boolean(this.#position.getAction());
+  }
+
+  doAction() {
+    const action = this.#position.getAction();
+    if (action) {
+      action()
+    }
+  }
 }
 
 class Node {
   #id;
   #adjacent;
+  #action;
 
   constructor(id) {
     this.#id = id;
     this.#adjacent = null;
+    this.#action = null;
   }
 
   getId() {
     return this.#id;
+  }
+
+  getAction() {
+    return this.#action;
+  }
+
+  setAction(action) {
+    if (!this.#action) {
+      this.#action = action;
+    }
   }
 
   getAdjacent() {
@@ -80,7 +104,7 @@ class Node {
   }
 
   setAdjacent(adjacent) {
-    if (this.#adjacent === null) {
+    if (!this.#adjacent) {
       this.#adjacent = [...adjacent];
     }
   }
@@ -98,6 +122,8 @@ function initializeMap() {
   for (let i = 0; i < alpLength; i++) {
     nodes[i].setAdjacent(ADJACENCY_LIST[i].map((id) => nodes[id]));
   }
+
+  nodes[0].setAction(() => showSign("  your journey begins here ..."));
 
   return nodes[0];
 }
@@ -117,7 +143,7 @@ function createPlayer(initialPosition) {
   return new Player(name, nick, initialPosition);
 }
 
-function drawOptions(player) {
+function drawTravelOptions(player) {
   console.log(`== Target location:  ${TARGET_ID} ==`);
   console.log(`-- Current location: ${player.getCurrentPosition().getId()} --`);
   console.log("");
@@ -130,18 +156,27 @@ function drawOptions(player) {
   console.log("");
 }
 
+function drawActionOptions(node) {
+  if (!node.getAction()) {
+    return;
+  }
+
+  console.log("  [X] Action");
+  console.log("");
+}
+
 function isValidChoice(player, choice) {
-  return !isNaN(choice)
+  return (!isNaN(choice)
     && 0 < Number(choice)
-    && Number(choice) <= player.getTravelOptions().length;
+    && Number(choice) <= player.getTravelOptions().length);
 }
 
 function makeChoice(player) {
   let choice = null;
-
   do {
     console.clear();
-    drawOptions(player);
+    drawTravelOptions(player);
+    drawActionOptions(player.getCurrentPosition());
 
     if(choice) {
       console.log(`  Your last choice "${choice}" is invalid.`);
@@ -150,9 +185,25 @@ function makeChoice(player) {
     }
 
     choice = PROMPT("  Your choice: ");
+
+    if (player.onActionPosition() && (choice == "X" || choice == "x")) {
+      player.doAction();
+      choice = null;  // supressing invalid-input-alert
+    }
+
   } while (!isValidChoice(player, choice));
 
   player.travelTo(choice - 1);
+}
+
+function showSign(msg) {
+  console.clear();
+  console.log("-- You're reading a sign --");
+  console.log("");
+  console.log(msg);
+  console.log("");
+  console.log("");
+  PROMPT("Press Enter to continue ...");
 }
 
 function victoryScreen(player) {
