@@ -103,8 +103,16 @@ function initializeMap() {
 }
 
 function createPlayer(initialPosition) {
-  const name = PROMPT("Enter your name: ");
-  const nick = PROMPT("Enter your nickname: ")
+  function prompter(msg) {
+    let answer;
+    do {
+      answer = PROMPT(msg).trim();
+    } while(!answer);
+    return answer
+  }
+
+  const name = prompter("Enter your name: ");
+  const nick = prompter("Enter your nickname: ");
 
   return new Player(name, nick, initialPosition);
 }
