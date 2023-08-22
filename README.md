@@ -8,6 +8,8 @@ In this repository you will find my solution for the task I received via email.
 
 ## `intern_task.js`
 
+> Goal: go from node **A** to node **N**.
+
 This file contains my whole solution.
 
 I opted for adjacency-list graph representation, because this approach was hinted in the task description.
@@ -30,3 +32,19 @@ $ node intern_task.js
 Edges without arrows are bidirectional.
 
 ![map](/img/kyndryl_map.png)
+
+### list of sign locations
+
+- A
+- B
+- F
+- H
+- L
+- M
+- O
+- Q
+- T
+- V
+- W
+- Y
+- Z

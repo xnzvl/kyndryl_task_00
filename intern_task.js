@@ -111,6 +111,35 @@ class Node {
 }
 
 
+function hangSigns(nodes) {
+  nodes[0]
+    .setAction(() => showSign("  your journey begins here ..."));
+  nodes["M".charCodeAt(0) - "A".charCodeAt(0)]
+    .setAction(() => showSign("  mimimimimi miiiiiiiiii"));
+  nodes["O".charCodeAt(0) - "A".charCodeAt(0)]
+    .setAction(() => showSign("  :O"));
+  nodes["V".charCodeAt(0) - "A".charCodeAt(0)]
+    .setAction(() => showSign("  V stands for ... *violence*"));
+  nodes["T".charCodeAt(0) - "A".charCodeAt(0)]
+    .setAction(() => showSign("  you can still turn around ..."));
+  nodes["L".charCodeAt(0) - "A".charCodeAt(0)]
+    .setAction(() => showSign("  *scoff* ... such a loser"));
+  nodes["W".charCodeAt(0) - "A".charCodeAt(0)]
+    .setAction(() => showSign("  W ... but not for you"));
+  nodes["B".charCodeAt(0) - "A".charCodeAt(0)]
+    .setAction(() => showSign("  some of these signs are so rude\n  who's writing them?"));
+  nodes["F".charCodeAt(0) - "A".charCodeAt(0)]
+    .setAction(() => showSign("  *paying respect*"));
+  nodes["Z".charCodeAt(0) - "A".charCodeAt(0)]
+    .setAction(() => showSign("  you're wasting your time here ._.'"));
+  nodes["H".charCodeAt(0) - "A".charCodeAt(0)]
+    .setAction(() => showSign("  HA HA HA HA HA HA HA HA\n".repeat(8)));
+  nodes["Y".charCodeAt(0) - "A".charCodeAt(0)]
+    .setAction(() => showSign("  WHYYYYYYYY?????????"));
+  nodes["Q".charCodeAt(0) - "A".charCodeAt(0)]
+    .setAction(() => showSign("  (╯°□°)╯︵ ┻━┻"));
+}
+
 function initializeMap() {
   const alpLength = "Z".charCodeAt(0) - "A".charCodeAt(0) + 1;
   const nodes = Array(alpLength).fill(null);
@@ -123,8 +152,7 @@ function initializeMap() {
     nodes[i].setAdjacent(ADJACENCY_LIST[i].map((id) => nodes[id]));
   }
 
-  nodes[0].setAction(() => showSign("  your journey begins here ..."));
-
+  hangSigns(nodes);
   return nodes[0];
 }
 
